@@ -1,0 +1,43 @@
+//Array
+
+
+fun main(){
+
+    //val numbers : IntArray = intArrayOf(1,2,3,4,5,6)
+//    val numberss = intArrayOf(1,2,3,4,5,6)
+//    println(numberss[0])
+
+    val numbers= arrayOf(1,2,3,4,5,6)
+    val numbersD= doubleArrayOf(1.1,2.2,3.3,4.4,5.5,6.6)
+//    println(numbers[0])
+//    println(numbers.contentToString())
+
+//    println(numbers.size)
+//    for(element in numbers){
+//        print(" ${element+2}")
+//
+//    }
+    //print(numbers)
+
+    println(numbers.contentToString())
+    numbers[0] = 8
+    numbers[3] = 99
+    println(numbers.contentToString())
+    //numbers[7] =33
+    numbersD[3] = 9.0
+    println(numbersD.contentToString())
+
+
+    val fruilts = arrayOf(Fruit("Apple",2.5),
+        Fruit("Orage",3.5),
+        Fruit("Bannan",4.5))
+    println(fruilts.contentToString())
+    for(index in fruilts.indices){
+        println("${fruilts[index].name} : ${fruilts[index].price}")
+    }
+    for (fruit in fruilts){
+        println("${fruit.name} : ${fruit.price}")
+    }
+}
+
+data class Fruit(val name:String, val price:Double)

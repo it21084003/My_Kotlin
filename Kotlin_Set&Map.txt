@@ -1,0 +1,43 @@
+//Set & Map
+
+package com.example.kotlinbasics
+
+fun main(){
+
+    val fruits = setOf("Orange","Apple","Mango","Grape","Apple","Orange")
+    println(fruits)
+    println(fruits.toSortedSet())
+
+    val newFruits = fruits.toMutableList()
+    newFruits.add("Water Melon")
+    newFruits.add("Pear")
+    println(newFruits)
+    println(newFruits.elementAt(4))
+
+    //Map
+
+    val daysOfTheWeek = mapOf(1 to "Monday",2 to "Tuesday",3 to "Wednesday")
+    println(daysOfTheWeek)
+    println(daysOfTheWeek[2])
+    for(key in daysOfTheWeek.keys){
+        println("$key is to ${daysOfTheWeek[key]}")
+    }
+
+    var fruitsMap = mapOf("Favorite" to Fruit("Grape",2.5),
+                            "Don't like fruit" to Fruit("Apple",1.0))
+
+    println(fruitsMap)
+    val newDayOfWeek = daysOfTheWeek.toMutableMap()
+    newDayOfWeek[4] = "Thursday"
+    newDayOfWeek[5] = "Friday"
+    println(newDayOfWeek.toSortedMap())
+
+    for (key in fruitsMap.keys){
+        for(key2 in fruitsMap.keys){
+            println("$key fruit is  ${fruitsMap[key2]?.name} : ${fruitsMap[key2]?.price}  ")
+        }
+
+    }
+}
+
+data class Fruit(val name:String, val price:Double)

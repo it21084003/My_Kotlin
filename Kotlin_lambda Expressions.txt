@@ -1,0 +1,81 @@
+//lambda Expressions
+
+fun main(){
+    var mine = Mine()
+    //function without body
+     var lamb : (Int) -> Unit = {s -> println(s)}
+    mine.addNums(3,4,lamb)
+}
+class Mine{
+    //higher level function
+    fun addNums(a:Int, b:Int, lamby: (Int) -> Unit){
+        var sum = a+b
+        lamby(sum)
+
+    }
+}
+
+///////
+
+fun main(){
+    var mine = Mine()
+    //function without body
+    //input datatype -> output datatype  = {input data -> output data}
+    var lamb : (Int,Int) -> Int = {x,y -> x+y}
+    mine.addNums(3,4,lamb)
+	 //other method
+    mine.addNums(3,4){x,y -> x+y}
+}
+class Mine{
+    //higher level function
+    fun addNums(a:Int, b:Int,lamb:(Int,Int)->Int){
+        var result = lamb(a,b)
+        println(result)
+    }
+}
+
+
+///
+
+fun main(){
+    var mine = Mine()
+
+    var ret = mine.addNums(3,4){x,y -> println(x+y)}
+    println(ret)
+
+
+}
+class Mine{
+    //higher level function
+    fun addNums(a:Int, b:Int,lamb:(Int,Int)->Unit) : String{
+      lamb(a,b)
+        return "hey"
+    }
+}
+
+/////////
+fun main(){
+    var mine = Mine()
+
+    var ret = mine.addNums(3,4){x,y -> x+y}
+    println(ret)
+
+
+}
+class Mine{
+    //higher level function
+    fun addNums(a:Int, b:Int,lamb:(Int,Int)->Int) : String{
+      var ret = lamb(a,b)
+        return "hey result is $ret"
+    }
+}
+
+/////
+udemy class
+
+val sum:(Int,Int) -> Int = {a:Int,b:Int ->a+b }
+println(sum(10,5)
+
+//shorter
+val sum = {a:Int,b:Int -> println(a+b)
+sum(10,5

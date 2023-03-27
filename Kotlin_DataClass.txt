@@ -1,0 +1,19 @@
+//Data Class
+
+fun main(){
+    var stu1 = Student("Mg Mg",20)
+    var stu2 = Student("Mg Mg",20)
+
+//    if (stu1 == stu2)
+//        println("Same")
+//    else
+//        println("Not the same")
+    println(stu1)
+
+    var stu3 = stu1.copy(name = "Aung Aung")
+    println(stu3)
+}
+
+//normal class ka address ko ckeck
+//data class ka data ko check
+ data class Student(var name : String, var age : Int)

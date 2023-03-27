@@ -1,0 +1,34 @@
+//List
+
+package com.example.kotlinbasics
+
+fun main(){
+
+    val months = listOf("Jan","Feb","March")
+    val antTypes = listOf(1,2,3,true,false,"String")
+    //println(antTypes.size)
+    //println(months[0])
+
+    val additionalMonths = months.toMutableList()
+    val newMonths = arrayOf("April","May","June")
+    additionalMonths.addAll(newMonths)
+    additionalMonths.add("july")
+    println(additionalMonths)
+
+    val days = mutableListOf<String>("Mon","Tue","Wed")
+    days.add("Thu")
+    println(days)
+    days[2] = "Sunday"
+    println(days)
+    days.removeAt(2)
+    println(days)
+    val removeList = mutableListOf<String>("Mon","Wed")
+    days.removeAll(removeList)
+    println(days)
+
+
+
+
+
+}
+

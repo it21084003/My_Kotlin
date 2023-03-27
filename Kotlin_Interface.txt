@@ -1,0 +1,35 @@
+//Interface
+
+package com.example.kotlinbasics
+
+import java.time.temporal.TemporalAmount
+
+fun main(){
+    var stu = Student()
+    stu.showName("Mg Mg")
+    stu.showAge(20)
+}
+
+interface NameListener{
+    fun showName(str : String)
+    fun show()
+}
+
+interface ClickListener{
+    fun showAge(age:Int)
+    fun show()
+}
+
+class Student : NameListener, ClickListener{
+    override fun showName(str: String) {
+        println("Showing Name $str")
+    }
+
+    override fun showAge(age :Int) {
+        println("Showing Age $age")
+    }
+
+    override fun show() {
+        println("Showing now")
+    }
+}

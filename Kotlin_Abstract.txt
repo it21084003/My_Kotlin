@@ -1,0 +1,35 @@
+//abstract class
+
+fun main(){
+    var v1 = Student()
+    v1.showage()
+
+    println( v1.name)
+    println(  v1.age)
+    println(  v1.show())
+
+}
+
+
+//abrsttract method mhar body ma par buu
+//if any of method or variable is abstract, class must be abstract
+//abstract call can't create object but use as parent
+//abstract properties and method arae to be override
+abstract class Person{
+    abstract var name:String
+    open fun show() {
+        println("Show")
+    }
+    var age = 20
+    abstract fun showage()
+}
+
+class Student : Person(){
+    override var name = "Mg Mg"
+    override fun showage() {
+        println("ab")
+    }
+    override fun show(){
+        println("Show in s")
+    }
+}

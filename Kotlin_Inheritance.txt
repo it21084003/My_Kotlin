@@ -1,0 +1,140 @@
+//Inheritance
+
+package com.example.kotlinbasics
+
+fun main(){
+    var boy = Boy()
+    var girl = Girl()
+
+    println(boy.name + boy.age)
+    println(girl.name + girl.age)
+    girl.name = "aye"
+    println(girl.name + girl.age)
+    println(girl.hobby)
+
+}
+
+//open lote mha Inheritance lote lo ya mal
+open class  Student{
+    var name : String = "Student"
+    var age : Int = -1
+
+}
+
+class Boy{
+    var name : String = "Boy"
+    var age : Int = -3
+}
+class Girl : Student(){
+    var hobby :String = "foorball"
+}
+
+
+
+
+
+//Udemy lesson
+
+package com.example.kotlinbasics
+
+import java.time.temporal.TemporalAmount
+
+fun main(){
+    var audiA3 = Car("A3","Audi")
+    var tesalS = ElectricCar("S-Model","Tesla", 85.0)
+
+    tesalS.chargerType = "Type2"
+    println(tesalS.chargerType)
+
+    audiA3.drive(200.0)
+    tesalS.drive(200.0)
+    tesalS.drive()
+}
+
+open class Car(val name:String,val brand:String){
+    open var range: Double = 0.0
+
+    fun extendRange(amount: Double){
+        if(amount > 0)
+            range += amount
+    }
+    open fun drive(distance: Double){
+        println("Drove for $distance KM ")
+    }
+}
+
+class ElectricCar(name: String,brand: String, batterylife: Double) : Car(name, brand){
+
+    var chargerType = "Type1"
+
+    override var range = batterylife * 6
+    override fun drive(distance: Double) {
+        println("Drove for $distance KM on Electricty ")
+    }
+    fun drive(){
+        println("Drove for $range KM on Electricty ")
+    }
+
+}
+
+//Udemy lesson
+
+fun main(){
+    var audiA3 = Car(200.0,"A3","Audi")
+    var tesalS = ElectricCar(240.0,"S-Model","Tesla", 85.0)
+
+    tesalS.chargerType = "Type2"
+    println(tesalS.chargerType)
+
+    //tesalS.drive()
+    tesalS.brake()
+    audiA3.brake()
+
+    audiA3.drive(200.0)
+    tesalS.drive(200.0)
+
+
+}
+
+interface Drivable{
+    val maxSpeed: Double
+    fun drive(): String
+    fun brake(){
+        println("The drivalbe is braking")
+    }
+}
+
+open class Car(override val maxSpeed:Double,val name:String,val brand:String): Drivable{
+    open var range: Double = 0.0
+
+    fun extendRange(amount: Double){
+        if(amount > 0)
+            range += amount
+    }
+    open fun drive(distance: Double){
+        println("Drove for $distance KM ")
+    }
+
+    override fun drive(): String {
+        return "Driving the Interface drive"
+    }
+
+}
+
+class ElectricCar(maxSpeed: Double,name: String,brand: String, batterylife: Double) : Car(maxSpeed,name, brand){
+
+    var chargerType = "Type1"
+
+    override var range = batterylife * 6
+    override fun drive(distance: Double) {
+        println("Drove for $distance KM on Electricty ")
+    }
+    override fun drive():String{
+        return "Drove for $range KM on Electricty "
+    }
+
+    override fun brake() {
+        super.brake()
+        println("brake inside of electric car ")
+    }
+}
