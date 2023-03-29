@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    tools:context=".activities.LoginActivity">
+    tools:context=".LoginActivity">
 
     <FrameLayout
         android:id="@+id/fl_header_image"
@@ -32,13 +31,13 @@
             android:src="@drawable/shop_logo_2" />
     </FrameLayout>
 
-    <com.example.myshop.utils.MSPTextViewBold
+    <com.example.firebaseauthdemo.utils.MSPTextViewBold
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:text="@string/title_login"
-        android:textColor="@color/colorPrimaryText"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/title_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,18 +52,19 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/et_hint_email_id"
-        android:textColorHint="@color/colorSecondaryText"
+        android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-        <com.example.myshop.utils.MSPEditText
+        <com.example.firebaseauthdemo.utils.MSPEditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:hint="email"
             android:padding="@dimen/et_padding"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/et_textSize" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,37 +77,37 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/et_hint_password"
-        android:textColorHint="@color/colorSecondaryText"
+        android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_email">
 
-        <com.example.myshop.utils.MSPEditText
+        <com.example.firebaseauthdemo.utils.MSPEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:hint="password"
             android:padding="@dimen/et_padding"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/et_textSize" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.example.myshop.utils.MSPTextView
+    <com.example.firebaseauthdemo.utils.MSPTextView
         android:id="@+id/tv_forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/clickable_text_view_padding"
         android:text="@string/lbl_forgot_password"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/forgot_password_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_password" />
 
 
 
-    <com.example.myshop.utils.MSPButton
+    <com.example.firebaseauthdemo.utils.MSPButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -139,17 +139,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.example.myshop.utils.MSPTextView
+        <com.example.firebaseauthdemo.utils.MSPTextView
             android:id="@+id/tv_don_t_have_any_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="@dimen/clickable_text_view_padding"
             android:text="@string/don_t_have_an_account"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/lbl_text_view_textSize" />
 
-        <com.example.myshop.utils.MSPTextViewBold
+        <com.example.firebaseauthdemo.utils.MSPTextViewBold
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -157,10 +157,9 @@
             android:foreground="?attr/selectableItemBackground"
             android:padding="@dimen/clickable_text_view_padding"
             android:text="@string/register"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/lbl_text_view_textSize" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,17 @@
 package com.example.myshop.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myshop.R
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class RegisterActivity :  BaseActivity() {
 
@@ -21,15 +23,12 @@ class RegisterActivity :  BaseActivity() {
     private var cb_terms_and_condition : CheckBox? = null
     private var btn_register : Button? = null
 
-
-
-
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
         et_first_name = findViewById(R.id.et_first_name)
-
         et_last_name = findViewById(R.id.et_last_name)
         et_email = findViewById(R.id.et_email)
         et_password = findViewById(R.id.et_password)
@@ -37,32 +36,65 @@ class RegisterActivity :  BaseActivity() {
         cb_terms_and_condition = findViewById(R.id.cb_terms_and_condition)
         btn_register = findViewById(R.id.btn_register)
 
-
-
         //login
         val tv_login_btn : TextView = findViewById(R.id.tv_login)
 
         tv_login_btn.setOnClickListener{
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            onBackPressed()
         }
 
         //back click
         var back_btn : View
-        back_btn = findViewById(R.id.toolbar_register_activity)
+        back_btn = findViewById(R.id.back_button)
         back_btn.setOnClickListener{
             onBackPressed()
         }
 
+        //Register start
         btn_register?.setOnClickListener {
-            validateRegisterDetails()
+            registerUser()
         }
-
-
-
-
     }
+    private fun registerUser(){
+        // Check with validate function if the entries are valid or not.
+        if(validateRegisterDetails()){
+
+            showProgressDialog(resources.getString(R.string.please_wait))
+
+//            val first_name: String = et_first_name?.text.toString().trim(){it <= ' '}
+//            val last_name: String = et_last_name?.text.toString().trim(){it <= ' '}
+            val email: String = et_email?.text.toString().trim(){it <= ' '}
+            val password: String = et_password?.text.toString().trim(){it <= ' '}
+//            val confirm_password: String = et_confirm_password?.text.toString().trim(){it <= ' '}
+//            val cb_terms_and_condition: String? = cb_terms_and_condition?.toString()
+
+            // Create an instance and create a register a user with email and password.
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(
+                    OnCompleteListener<AuthResult> {task ->
+
+                        hideProgressDialog()
+
+                        // If the registration is successfully done
+                        if(task.isSuccessful){
+                            // Firebase registered user
+                            val firebaseUser: FirebaseUser = task.result!!.user!!
+
+                            showErrorSnackBar("You are registered successfully. Your user id is ${firebaseUser.uid}",
+                                false)
+                            //after register logout
+                            FirebaseAuth.getInstance().signOut()
+                            finish()
+                        }else{
+                            // If the registering is not successful then show error message.
+                            showErrorSnackBar(task.exception!!.message.toString(),
+                                true)
+                        }
+                    }
+                )
+        }
+    }
+
     //validateRegister
     private fun validateRegisterDetails() : Boolean{
         return when{
@@ -95,7 +127,8 @@ class RegisterActivity :  BaseActivity() {
                 false
             }
             else -> {
-                showErrorSnackBar(resources.getString(R.string.registery_successfull), false)
+
+                //showErrorSnackBar(resources.getString(R.string.registery_successfull), false)
                 true
             }
 

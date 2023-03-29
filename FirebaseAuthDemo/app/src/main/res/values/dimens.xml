@@ -16,19 +16,20 @@
     <dimen name="lbl_text_view_textSize">16sp</dimen>
 
     <!--Register activity-->
-    <dimen name="toolbar_title_paddingStart">25dp</dimen>
+    <dimen name="toolbar_title_paddingStart">-25dp</dimen>
     <dimen name="toolbar_title_text_size">18sp</dimen>
     <dimen name="txt_terms_condition_marginStart">10dp</dimen>
     <dimen name="txt_terms_and_condition_textSize">14sp</dimen>
     <dimen name="button_paddingTop_Bottom">8dp</dimen>
 
-
-    <!--dialog -->
-    <dimen name="progress_dialog_content_padding">10dp</dimen>
-    <dimen name="progress_bar_size">50dp</dimen>
-    <dimen name="progress_text_marginStart">16dp</dimen>
-    <dimen name="progress_text_size">16sp</dimen>
-
-
+    <!--Error Message-->
+    <string name="err_msg_enter_first_name">Please enter first name.</string>
+    <string name="err_msg_enter_last_name">Please enter last name.</string>
+    <string name="err_msg_enter_email">Please enter email.</string>
+    <string name="err_msg_enter_password">Please enter password.</string>
+    <string name="err_msg_enter_confirm_password">Please enter confirm password.</string>
+    <string name="err_msg_password_and_confirm_password_mismatch">Password and confirm password does not match.</string>
+    <string name="err_msg_agree_terms_and_condition">Please agree terms and condition.</string>
+    <string name="registery_successfull">Thanks for registering!</string>
 
 </resources>

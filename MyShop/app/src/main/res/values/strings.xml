@@ -21,5 +21,18 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login"><u>Login</u></string>
 
+    <!--validate-->
+    <string name="err_msg_enter_first_name">Please enter first name.</string>
+    <string name="err_msg_enter_last_name">Please enter last name.</string>
+    <string name="err_msg_enter_email">Please enter email.</string>
+    <string name="err_msg_enter_password">Please enter password.</string>
+    <string name="err_msg_enter_confirm_password">Please enter confirm password.</string>
+    <string name="err_msg_password_and_confirm_password_mismatch">Password and confirm password does not match.</string>
+    <string name="err_msg_agree_terms_and_condition">Please agree terms and condition.</string>
 
+    <string name="please_wait">Please Wait&#8230;</string>
+
+    <!--forgot password activity-->
+    <string name="forgot_password_screen">FORGOT PASSWORD SCREEN</string>
+    <string name="forgot_password_hint">Enter your username and email address we\'ll send you a email to reset your password</string>
 </resources>
