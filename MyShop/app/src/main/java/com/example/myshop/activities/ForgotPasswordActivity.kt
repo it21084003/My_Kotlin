@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.example.myshop.R
 import com.google.firebase.auth.FirebaseAuth
 
-class ForgotPasswordActivity : AppCompatActivity() {
+class ForgotPasswordActivity : BaseActivity() {
 
     private var btn_submit : Button? = null
     private var et_forgot_email : EditText? = null
@@ -24,18 +24,17 @@ class ForgotPasswordActivity : AppCompatActivity() {
         btn_submit?.setOnClickListener{
             val email:String = et_forgot_email?.text.toString().trim(){it <= ' '}
             if(email.isEmpty()){
-                Toast.makeText(this,"Please enter email",
-                    Toast.LENGTH_SHORT).show()
+                showErrorSnackBar("Please enter email!", true)
+
             }else{
                 FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                     .addOnCompleteListener { task ->
                         if(task.isSuccessful){
-                            Toast.makeText(this,"Email sent successfully to reset your password!",
-                                Toast.LENGTH_SHORT).show()
+                            showErrorSnackBar("Email sent successfully to reset your password!", true)
+
                             finish()
                         }else{
-                            Toast.makeText(this,task.exception!!.message.toString(),
-                                Toast.LENGTH_SHORT).show()
+                            showErrorSnackBar(task.exception!!.message.toString(), true)
                         }
                     }
             }

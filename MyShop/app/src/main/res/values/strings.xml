@@ -35,4 +35,5 @@
     <!--forgot password activity-->
     <string name="forgot_password_screen">FORGOT PASSWORD SCREEN</string>
     <string name="forgot_password_hint">Enter your username and email address we\'ll send you a email to reset your password</string>
+    <string name="register_success">You are registered successfully</string>
 </resources>
