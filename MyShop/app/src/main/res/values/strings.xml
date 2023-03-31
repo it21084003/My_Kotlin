@@ -36,4 +36,11 @@
     <string name="forgot_password_screen">FORGOT PASSWORD SCREEN</string>
     <string name="forgot_password_hint">Enter your username and email address we\'ll send you a email to reset your password</string>
     <string name="register_success">You are registered successfully</string>
+
+    <!--user profile-->
+    <string name="title_complete_profile"> MY  PROFILE</string>
+    <string name="et_hint_mobile_number">Mobile Number</string>
+    <string name="rb_lbl_male">MALE</string>
+    <string name="rb_lbl_female">FEMALE</string>
+    <string name="btn_lbl_save">Save</string>
 </resources>

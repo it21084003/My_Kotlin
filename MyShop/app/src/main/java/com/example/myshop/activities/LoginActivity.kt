@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.example.myshop.R
 import com.example.myshop.firestore.FirestoreClass
 import com.example.myshop.models.User
+import com.example.myshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -49,7 +50,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         if(v != null){
             when(v.id){
                 R.id.tv_forgot_password -> {
-                    val intent = Intent(this, ForgotPasswordActivity::class.java)
+                    val intent = Intent(this, UserProfileActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.btn_login -> {
@@ -112,9 +113,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         Log.i("Last Name: ",user.lastName)
         Log.i("Email: ",user.email)
 
-        //redirect the user to Main Screen after log in
-        startActivity(Intent(this, MainActivity::class.java))
+        if(user.profileCompleted == 0){
+            //if the user profile is incomplete then launch the userProifleActivity
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS, user)
+            startActivity(intent)
+        }else{
+            //redirect the user to Main Screen after log in
+            startActivity(Intent(this, MainActivity::class.java))
+
+        }
         finish()
+
+
     }
 
 }
