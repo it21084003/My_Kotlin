@@ -1,21 +1,17 @@
-package com.example.myshop.activities
+package com.example.myshop.ui.activities
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.provider.MediaStore
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import com.example.myshop.R
 import com.example.myshop.firestore.FirestoreClass
 import com.example.myshop.models.User
@@ -54,6 +50,8 @@ class UserProfileActivity : BaseActivity() ,View.OnClickListener{
         btn_submit = findViewById(R.id.btn_submit)
         rb_male = findViewById(R.id.rb_male)
         rb_female = findViewById(R.id.rb_female)
+        //tv_verfied = findViewById(R.id.tv_verify_icon)
+
 
     // Assign the on click event to the user profile photo.
     image_view?.setOnClickListener(this)
@@ -68,25 +66,37 @@ class UserProfileActivity : BaseActivity() ,View.OnClickListener{
         mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
     }
 
-    // Here, the some of the edittext components are disabled because it is added at a time of Registration.
-    et_first_name?.isEnabled = false
     et_first_name?.setText(mUserDetails.firstName)
-
-    et_last_name?.isEnabled = false
     et_last_name?.setText(mUserDetails.lastName)
-
     et_email?.isEnabled = false
     et_email?.setText(mUserDetails.email)
 
-//    image_view?.isEnabled = true
-//    image_view?.setImageResource(mUserDetails.image.toInt())
+    if(mUserDetails.profileCompleted == 0){
+        //tv_verfied?.setBackgroundColor(R.color.colorSnackBarSuccess!!)
+        et_first_name?.isEnabled = false
+        et_last_name?.isEnabled = false
 
+    }else{
+        //tv_verfied?.setBackgroundColor(R.color.colorPrimaryDark!!)
+        GlideLoader(this).loaduserPicture(mUserDetails.image, image_view!!)
 
+        et_email?.isEnabled = false
+        et_email?.setText(mUserDetails.email)
+
+        if(mUserDetails.mobile != 0L){
+            et_mobile_number?.setText(mUserDetails.mobile.toString())
+        }
+        if(mUserDetails.gender == Constants.MALE){
+            rb_male?.isChecked = true
+        }else{
+            rb_female?.isChecked = true
+        }
+    }
         //back click
         val back_btn : View
         back_btn = findViewById(R.id.back_button)
         back_btn.setOnClickListener{
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
     override fun onClick(v: View?) {
@@ -96,11 +106,9 @@ class UserProfileActivity : BaseActivity() ,View.OnClickListener{
                 R.id.iv_image_view -> {
 
                     if (ContextCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        )
-                        == PackageManager.PERMISSION_GRANTED
-                    ) {
+                            this,Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED)
+                    {
                         Constants.showImageChooser(this@UserProfileActivity)
                     } else {
                         /*Requests permissions to be granted to this application. These permissions
@@ -128,8 +136,8 @@ class UserProfileActivity : BaseActivity() ,View.OnClickListener{
                         if (mSelectedImageFileUri != null) {
 
                             FirestoreClass().uploadImageToCloudStorage(
-                                this@UserProfileActivity,
-                                mSelectedImageFileUri
+                                this,
+                                mSelectedImageFileUri, Constants.USER_PROFILE_IMAGE
                             )
                         } else {
                             updateUserProfileDetails()
@@ -229,25 +237,43 @@ class UserProfileActivity : BaseActivity() ,View.OnClickListener{
 
 
         // Redirect to the Main Screen after profile completion.
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, SettingsActivity::class.java))
         finish()
     }
     // END
 
     private fun updateUserProfileDetails(){
         val userHashMap = HashMap<String, Any>()
+
+        val firstName = et_first_name?.text.toString().trim(){it <= ' '}
+        if(firstName != mUserDetails.firstName){
+            userHashMap[Constants.FIRST_NAME] = firstName
+        }
+
+        val lastName = et_last_name?.text.toString().trim(){it <= ' '}
+        if(lastName != mUserDetails.lastName){
+            userHashMap[Constants.LAST_NAME] = lastName
+        }
+
         val mobileNumber = et_mobile_number?.text.toString().trim(){it <= ' '}
+        if(mobileNumber.isNotEmpty() && mobileNumber != mUserDetails.mobile.toString()){
+            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
+        }
+
         val gender = if(rb_male?.isChecked!!){
             Constants.MALE
         }else{
             Constants.FEMALE
         }
+        if(gender.isNotEmpty() && gender != mUserDetails.gender){
+            userHashMap[Constants.GENDER] = gender
+        }
+
+
         if(mUserProfileImageURL.isNotEmpty()){
             userHashMap[Constants.IMAGE] = mUserProfileImageURL
         }
-        if(mobileNumber.isNotEmpty()){
-            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
-        }
+
         userHashMap[Constants.GENDER] = gender
 
         userHashMap[Constants.COMPLETE_PROFILE] = 1
@@ -258,6 +284,8 @@ class UserProfileActivity : BaseActivity() ,View.OnClickListener{
 
     fun imageUploadSuccess(imageURL: String){
         //hideProgressDialog()
+
+
 
         mUserProfileImageURL = imageURL
         updateUserProfileDetails()
