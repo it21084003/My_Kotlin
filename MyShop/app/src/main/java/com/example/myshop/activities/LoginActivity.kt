@@ -1,10 +1,8 @@
 package com.example.myshop.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -98,20 +96,27 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     }else{
                         hideProgressDialog()
                         showErrorSnackBar(task.exception!!.message.toString(), true)
+
+
                     }
                 }
         }
 
     }
 
+//    fun Snackbar.gravityTop(){
+//        this.view.layoutParams = (this.view.layoutParams as FrameLayout.LayoutParams)
+//            .apply { gravity = Gravity.TOP }
+//    }
+
     fun userLoggedInSuccess(user: User){
         //Hide the progress dialog
         hideProgressDialog()
 
         //Print the user details int the log as of now
-        Log.i("First Name: ",user.firstName)
-        Log.i("Last Name: ",user.lastName)
-        Log.i("Email: ",user.email)
+//        Log.i("First Name: ",user.firstName)
+//        Log.i("Last Name: ",user.lastName)
+//        Log.i("Email: ",user.email)
 
         if(user.profileCompleted == 0){
             //if the user profile is incomplete then launch the userProifleActivity
@@ -120,7 +125,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             startActivity(intent)
         }else{
             //redirect the user to Main Screen after log in
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, DashboardActivity::class.java))
 
         }
         finish()
