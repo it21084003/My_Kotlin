@@ -1,15 +1,16 @@
 package com.example.myshop.utils
 
 import android.app.Activity
-import android.content.ContentResolver.MimeTypeInfo
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import androidx.core.app.ActivityCompat.startActivityForResult
 
 object Constants {
+    //Collection firestore
     const val USERS: String = "users"
+    const val PRODUCTS :String = "products"
+
     const val MYSHOP_PREFERENCES: String = "MyShopPalPrefs"
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
     const val EXTRA_USER_DETAILS: String = "extra_user_details"
@@ -18,6 +19,8 @@ object Constants {
 
     const val MALE: String = "Male"
     const val FEMALE: String = "Female"
+    const val FIRST_NAME: String = "firstName"
+    const val LAST_NAME: String = "lastName"
 
     const val MOBILE: String = "mobile"
     const val GENDER: String = "gender"
@@ -25,6 +28,11 @@ object Constants {
     const val COMPLETE_PROFILE: String = "profileCompleted"
 
     const val USER_PROFILE_IMAGE: String = "User_Profile_Image"
+
+    const val PRODUCT_IMAGE: String = "Product_Image"
+
+    const val USER_ID :String = "user_id"
+
 
 
 

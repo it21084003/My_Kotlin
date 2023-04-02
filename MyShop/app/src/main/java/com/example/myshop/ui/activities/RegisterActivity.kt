@@ -1,4 +1,4 @@
-package com.example.myshop.activities
+package com.example.myshop.ui.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import com.example.myshop.R
 import com.example.myshop.firestore.FirestoreClass
 import com.example.myshop.models.User
@@ -153,6 +152,8 @@ class RegisterActivity :  BaseActivity() {
 
         Toast.makeText(this, resources.getString(R.string.register_success),
         Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this, LoginActivity::class.java))
+
     }
 
 }

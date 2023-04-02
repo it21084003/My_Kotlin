@@ -1,11 +1,9 @@
-package com.example.myshop.activities
+package com.example.myshop.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import com.example.myshop.R
 import com.google.firebase.auth.FirebaseAuth
 

@@ -1,8 +1,8 @@
-package com.example.myshop.activities
+package com.example.myshop.ui.activities
 
 import android.app.Dialog
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.example.myshop.R
 import com.google.android.material.snackbar.Snackbar
@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 open class BaseActivity : AppCompatActivity() {
 
     private lateinit var mProgressDialog: Dialog
+    private var doublueBackToExitPressedOnce = false
 
     //Error Message
 
@@ -53,4 +54,23 @@ open class BaseActivity : AppCompatActivity() {
         mProgressDialog.dismiss()
     }
     // END
+
+    //
+    fun doubleBackToExit(){
+        if(doublueBackToExitPressedOnce){
+            super.onBackPressed()
+            return
+        }
+        this.doublueBackToExitPressedOnce = true
+
+        Toast.makeText(
+            this,
+            resources.getString(R.string.please_click_back_again_to_exit),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        @Suppress("DEPRECTION")
+        (android.os.Handler()).postDelayed({doublueBackToExitPressedOnce = false},
+        2000)
+    }
 }

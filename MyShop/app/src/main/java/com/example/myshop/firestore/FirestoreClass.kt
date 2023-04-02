@@ -5,13 +5,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
-import com.example.myshop.R
-import com.example.myshop.activities.BaseActivity
-import com.example.myshop.activities.LoginActivity
-import com.example.myshop.activities.RegisterActivity
-import com.example.myshop.activities.UserProfileActivity
+import androidx.fragment.app.Fragment
+import com.example.myshop.models.Product
 import com.example.myshop.models.User
+import com.example.myshop.ui.activities.*
+import com.example.myshop.ui.fragments.ProductsFragment
 import com.example.myshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -60,6 +58,16 @@ class FirestoreClass {
         }
         return currentuserID
     }
+//
+//    fun getCurrentProductID(): String{
+//        val currentProduct = FirebaseAuth.getInstance().uid
+//
+//        var currentProductId = ""
+//        if(currentProduct != null){
+//            currentProductId = currentProduct
+//        }
+//        return currentProductId
+//    }
 
     fun getUserDetails(activity: Activity){
         //Here we pass the collection name from which we wants the data
@@ -96,14 +104,68 @@ class FirestoreClass {
                         //Call a function of base activity for transferring the result to it
                         activity.userLoggedInSuccess(user)
                     }
+                    is SettingsActivity -> {
+                        activity.userDetailsSuccess(user)
+                    }
                 }
                 //End
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
+                when(activity){
+                    is LoginActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is SettingsActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+                Log.e(activity.javaClass.simpleName,
+                    "Error while getting user details", e
+                )
 
             }
 
     }
+    fun uploadProductDetails(activity: AddProductActivity, productInfo: Product){
+        mFireStore.collection(Constants.PRODUCTS)
+            .document()
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge later on instead of replacing the fields.
+            .set(productInfo, SetOptions.merge())
+            .addOnCompleteListener{
+                // Here call a function of base activity for transferring the result to it.
+                activity.productUploadSuccess()
+            }
+            .addOnFailureListener { e ->
+
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,
+                    "Error while uploading the product details", e
+                )
+
+            }
+    }
+
+    fun getProductList(fragment: Fragment){
+        mFireStore.collection(Constants.PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentuserID())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Products List",document.documents.toString())
+                val productsList: ArrayList<Product> = ArrayList()
+                for(i in document.documents){
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+
+                    productsList.add(product)
+                }
+                when(fragment){
+                    is ProductsFragment ->{
+                        fragment.successProductsListFromFireStore(productsList)
+                    }
+                }
+            }
+    }
+
 
     fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>){
         mFireStore.collection(Constants.USERS)
@@ -128,9 +190,9 @@ class FirestoreClass {
 
     }
 
-    fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?){
+    fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?, imageType: String){
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
+            imageType + System.currentTimeMillis() + "."
                 +Constants.getFileExtension(
                 activity, imageFileURI
                 )
@@ -149,6 +211,10 @@ class FirestoreClass {
                         is UserProfileActivity -> {
                             activity.imageUploadSuccess(uri.toString())
                         }
+                        is AddProductActivity -> {
+                            activity.imageUploadSuccess(uri.toString())
+                        }
+
 
                     }
                 }
@@ -159,6 +225,9 @@ class FirestoreClass {
                     is UserProfileActivity -> {
                         activity.hideProgressDialog()
                     }
+                    is AddProductActivity -> {
+                        activity.hideProgressDialog()
+                }
                 }
                 Log.e(
                     activity.javaClass.simpleName,
@@ -167,6 +236,8 @@ class FirestoreClass {
                 )
             }
     }
+
+
 
 
 }
