@@ -1,6 +1,7 @@
 package com.example.myshop.ui.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myshop.R
 import com.example.myshop.models.Product
+import com.example.myshop.ui.activities.ProductDetailsActivity
 import com.example.myshop.ui.fragments.ProductsFragment
+import com.example.myshop.utils.Constants
 import com.example.myshop.utils.GlideLoader
 
 
@@ -33,12 +36,18 @@ open class MyProductsListAdapter (
 
             GlideLoader(context).loadproductPicture(model.image, holder.itemView.findViewById(R.id.iv_item_image))
             holder.itemView.findViewById<TextView>(R.id.tv_item_name).text = model.title
-            holder.itemView.findViewById<TextView>(R.id.tv_item_price).text = "${model.price}"
+            holder.itemView.findViewById<TextView>(R.id.tv_item_price).text = "${model.price}$"
 
 
             holder.itemView.findViewById<ImageButton>(R.id.ib_delete_product).setOnClickListener{
                 //TODO delete product
                 fragment.deleteProduct(model.product_id)
+            }
+
+            holder.itemView.setOnClickListener{
+                val intent = Intent(context, ProductDetailsActivity::class.java)
+                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.product_id)
+                context.startActivity(intent)
             }
         }
     }

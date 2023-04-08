@@ -51,7 +51,6 @@
     <string name="err_msg_select_product_image">Please select product image</string>
 
 
-
     <string name="title_forgot_password">FORGOT PASSWORD?</string>
     <string name="forgot_password_title_description">Enter your username and e-mail address we\'ll send you a email to reset your password</string>
     <string name="btn_lbl_submit">Submit</string>
@@ -88,4 +87,9 @@
     <string name="product_delete_success_message">Your product is deleted successfully</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <!--product detail-->
+    <string name="title_product_details">PRODUCT DETAILS</string>
+    <string name="lbl_product_description">Product description</string>
+    <string name="lbl_product_details_stock_quantity">Stock Quantity</string>
 </resources>

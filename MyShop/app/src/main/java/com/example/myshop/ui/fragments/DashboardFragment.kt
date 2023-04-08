@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myshop.R
 import com.example.myshop.firestore.FirestoreClass
 import com.example.myshop.models.Product
+import com.example.myshop.ui.activities.ProductDetailsActivity
 import com.example.myshop.ui.activities.SettingsActivity
 import com.example.myshop.ui.adapter.DashboardItemsListAdapter
+import com.example.myshop.utils.Constants
 
 class DashboardFragment : BaseFragment() {
 
@@ -72,8 +74,16 @@ class DashboardFragment : BaseFragment() {
 
             rv_my_product_items?.layoutManager = GridLayoutManager(activity,2)
             rv_my_product_items?.setHasFixedSize(true)
-            val adapterProducts = DashboardItemsListAdapter(requireActivity(), dashboardItemsList)
-            rv_my_product_items?.adapter = adapterProducts
+            val adapter = DashboardItemsListAdapter(requireActivity(), dashboardItemsList)
+            rv_my_product_items?.adapter = adapter
+
+            adapter.setOnClickListener(object: DashboardItemsListAdapter.OnClickListener{
+                override fun onClick(position: Int, product: Product) {
+                    val intent = Intent(context, ProductDetailsActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID, product.product_id)
+                    startActivity(intent)
+                }
+            })
 
         }else{
             rv_my_product_items?.visibility = View.GONE
