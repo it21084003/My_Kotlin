@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.myshop.models.Product
 import com.example.myshop.models.User
 import com.example.myshop.ui.activities.*
+import com.example.myshop.ui.fragments.DashboardFragment
 import com.example.myshop.ui.fragments.ProductsFragment
 import com.example.myshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -147,6 +148,7 @@ class FirestoreClass {
 
     fun getProductList(fragment: Fragment){
         mFireStore.collection(Constants.PRODUCTS)
+                //only see my product
             .whereEqualTo(Constants.USER_ID, getCurrentuserID())
             .get()
             .addOnSuccessListener { document ->
@@ -164,6 +166,46 @@ class FirestoreClass {
                     }
                 }
             }
+    }
+
+    fun deleteProduct(fragment: ProductsFragment, productId: String){
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productId)
+            .delete()
+            .addOnSuccessListener {
+                fragment.productDeleteSuccess()
+            }
+            .addOnFailureListener{ e ->
+                fragment.hideProgressDialog()
+
+                Log.e(
+                    fragment.requireActivity().javaClass.simpleName,
+                    "Error while deleteing the product", e
+                )
+            }
+    }
+    fun getDashboardItemList(fragment: DashboardFragment){
+        mFireStore.collection(Constants.PRODUCTS)
+        //see all product
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e(fragment.javaClass.simpleName, document.documents.toString())
+
+                val productsList: ArrayList<Product> = ArrayList()
+                for(i in document.documents){
+                    val product = i.toObject(Product::class.java)!!
+                    product.product_id = i.id
+                    productsList.add(product)
+
+                }
+                fragment.successDashboardItemsList(productsList)
+            }
+            .addOnFailureListener{ e ->
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName,"Error while getting dashboard items list", e)
+            }
+
+
     }
 
 

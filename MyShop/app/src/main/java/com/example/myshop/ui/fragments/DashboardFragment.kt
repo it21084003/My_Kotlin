@@ -4,11 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myshop.R
+import com.example.myshop.firestore.FirestoreClass
+import com.example.myshop.models.Product
 import com.example.myshop.ui.activities.SettingsActivity
+import com.example.myshop.ui.adapter.DashboardItemsListAdapter
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
+
+    var rv_my_product_items : RecyclerView? = null
+    var tv_no_product_found : TextView? = null
+    private lateinit var mRootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +30,14 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        textView.text = "This is Dashboard Fragment"
+        val mRootView = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-        return root
+        return mRootView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getDashboardItemList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -47,6 +58,32 @@ class DashboardFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun successDashboardItemsList(dashboardItemsList: ArrayList<Product>){
+        hideProgressDialog()
+
+        rv_my_product_items = view?.findViewById(R.id.rv_my_product_items)
+        tv_no_product_found = view?.findViewById(R.id.tv_no_product_found)
+
+        if(dashboardItemsList.size > 0){
+            rv_my_product_items?.visibility = View.VISIBLE
+            tv_no_product_found?.visibility = View.GONE
+
+            rv_my_product_items?.layoutManager = GridLayoutManager(activity,2)
+            rv_my_product_items?.setHasFixedSize(true)
+            val adapterProducts = DashboardItemsListAdapter(requireActivity(), dashboardItemsList)
+            rv_my_product_items?.adapter = adapterProducts
+
+        }else{
+            rv_my_product_items?.visibility = View.GONE
+            tv_no_product_found?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun getDashboardItemList(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().getDashboardItemList(this)
     }
 
 }

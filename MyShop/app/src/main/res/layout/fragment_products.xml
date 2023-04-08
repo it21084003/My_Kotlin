@@ -7,20 +7,6 @@
     android:background="@color/colorOfwhite"
     tools:context=".ui.fragments.ProductsFragment">
 
-<!--    <TextView-->
-<!--        android:id="@+id/text_products"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="20sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_my_product_items"
         android:layout_width="match_parent"
@@ -31,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
+    <TextView
             android:id="@+id/tv_no_product_found"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +25,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:textAlignment="center"
-            android:text="@string/no_products_add_yet"
+            android:text="No Products"
             android:textSize="@dimen/no_data_found_textSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
