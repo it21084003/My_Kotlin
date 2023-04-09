@@ -1,6 +1,8 @@
 package com.example.myshop.ui.activities
 
 import android.app.Dialog
+import android.view.Gravity
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -15,19 +17,23 @@ open class BaseActivity : AppCompatActivity() {
     //Error Message
 
     fun showErrorSnackBar(message: String, errorMessage: Boolean){
-        val snackBar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-        val snackBarView = snackBar.view
+        val snackBarView = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+        val view = snackBarView.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+
 
         if(errorMessage){
-            snackBarView.setBackgroundColor(
+            view.setBackgroundColor(
                 ContextCompat.getColor(this,R.color.colorSnackBarError)
             )
         }else{
-            snackBarView.setBackgroundColor(
+            view.setBackgroundColor(
                 ContextCompat.getColor(this,R.color.colorSnackBarSuccess)
             )
         }
-        snackBar.show()
+
+        snackBarView.show()
     }
 
     /**

@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
+import com.example.myshop.models.Address
 import com.example.myshop.models.CartItem
 import com.example.myshop.models.Product
 import com.example.myshop.models.User
@@ -444,6 +445,40 @@ class FirestoreClass {
             }
     }
 
+    fun getAddressList(activity: AddressListActivity){
+        mFireStore.collection(Constants.ADDRESSES)
+            .whereEqualTo(Constants.USER_ID, getCurrentuserID())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e(activity.javaClass.simpleName,document.documents.toString())
+                val addressList: ArrayList<Address> = ArrayList()
+                for(i in document.documents){
+                    val address = i.toObject(Address::class.java)!!
+                    address.id = i.id
+                    addressList.add(address)
+                }
+                activity.successAddressListFromFirestore(addressList)
+            } .addOnFailureListener{ e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,
+                    "Error while getting the address", e)
+            }
+
+    }
+    fun addAddress(activity: AddEditAddressActivity, addressInfo: Address){
+        mFireStore.collection(Constants.ADDRESSES)
+            .document()
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+
+                activity.addUpdateAddressSuccess()
+            }
+            .addOnFailureListener{ e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,
+                    "Error while adding the address", e)
+            }
+    }
 
 
 
