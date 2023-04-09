@@ -14,10 +14,15 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activities.ProductDetailsActivity"
+            android:name=".ui.activities.CartListActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyShop.NoActionBar"/>
+        <activity
+            android:name=".ui.activities.ProductDetailsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyShop.NoActionBar" />
         <activity
             android:name=".ui.activities.AddProductActivity"
             android:exported="false"
