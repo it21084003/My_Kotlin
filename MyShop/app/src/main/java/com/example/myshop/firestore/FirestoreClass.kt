@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.example.myshop.models.Address
-import com.example.myshop.models.CartItem
-import com.example.myshop.models.Product
-import com.example.myshop.models.User
+import com.example.myshop.models.*
 import com.example.myshop.ui.activities.*
 import com.example.myshop.ui.fragments.DashboardFragment
 import com.example.myshop.ui.fragments.ProductsFragment
@@ -223,11 +220,17 @@ class FirestoreClass {
                     is CartListActivity ->{
                         activity.successCartItemsList(list)
                     }
+                    is CheckoutActivity ->{
+                        activity.successCartItemsList(list)
+                    }
                 }
             }
             .addOnFailureListener{ e ->
                 when(activity){
                     is CartListActivity ->{
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity ->{
                         activity.hideProgressDialog()
                     }
                 }
@@ -258,6 +261,22 @@ class FirestoreClass {
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while checking the exiting cart list", e
+                )
+            }
+    }
+
+    fun placeOrder(activity: CheckoutActivity, order: Order){
+        mFireStore.collection(Constants.ORDERS)
+            .document()
+            .set(order, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.orderPlacedSuccess()
+            }
+            .addOnFailureListener{ e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while placing an order", e
                 )
             }
     }
@@ -327,11 +346,11 @@ class FirestoreClass {
 
     }
 
-    fun getAllProductsList(activity: CartListActivity){
+    fun getAllProductsList(activity: Activity){
         mFireStore.collection(Constants.PRODUCTS)
             .get()
             .addOnSuccessListener { document ->
-                activity.hideProgressDialog()
+//                activity.hideProgressDialog()
                 Log.e("Products List", document.documents.toString())
                 val productList : ArrayList<Product> = ArrayList()
                 for(i in document.documents){
@@ -340,12 +359,28 @@ class FirestoreClass {
                     productList.add(product)
                 }
 
-                activity.successProductsListFromFireStore(productList)
+                when(activity){
+                    is CartListActivity -> {
+                        activity.successProductsListFromFireStore(productList)
+                    }
+                    is CheckoutActivity -> {
+                        activity.successProductsListFromFireStore(productList)
+                    }
+                }
+
 
 
             }
             .addOnFailureListener{ e ->
-                activity.hideProgressDialog()
+                when(activity){
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
                 Log.e("Get Product List","Error while getting dashboard items list",e)
             }
     }
