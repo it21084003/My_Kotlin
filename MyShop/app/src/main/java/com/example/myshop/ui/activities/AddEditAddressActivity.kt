@@ -25,6 +25,8 @@ class AddEditAddressActivity : BaseActivity() {
     private var et_other_details : EditText? = null
     private var til_other_details : TextInputLayout? = null
 
+    private var mAddressDetails : Address? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_address)
@@ -41,6 +43,37 @@ class AddEditAddressActivity : BaseActivity() {
         et_other_details = findViewById(R.id.et_other_details)
         rg_type = findViewById(R.id.rg_type)
         til_other_details = findViewById(R.id.til_other_details)
+
+        if(intent.hasExtra(Constants.EXTRA_ADDRESS_DETAILS)){
+            mAddressDetails = intent.getParcelableExtra(Constants.EXTRA_ADDRESS_DETAILS)!!
+        }
+
+        if(mAddressDetails != null){
+            if(mAddressDetails!!.id.isNotEmpty()){
+                //tv_title?.text = resources.getString(R.string.title_edit_address)
+                btn_submit_address?.text = resources.getString(R.string.btn_lbl_update)
+
+                et_full_name?.setText(mAddressDetails?.name)
+                et_phone_number?.setText(mAddressDetails?.mobileNumber)
+                et_address?.setText(mAddressDetails?.address)
+                et_zip_code?.setText(mAddressDetails?.zipCode)
+                et_additional_note?.setText(mAddressDetails?.additionalNote)
+
+                when(mAddressDetails?.type){
+                    Constants.HOME -> {
+                        rb_home?.isChecked = true
+                    }
+                    Constants.OFFICE -> {
+                        rb_office?.isChecked = true
+                    }
+                    else -> {
+                        rb_other?.isChecked = true
+                        til_other_details?.visibility = View.VISIBLE
+                        et_other_details?.setText(mAddressDetails?.otherDetails)
+                    }
+                }
+            }
+        }
 
 
         btn_submit_address?.setOnClickListener{
@@ -97,17 +130,29 @@ class AddEditAddressActivity : BaseActivity() {
                 addressType,
                 otherDetails
             )
+            if(mAddressDetails != null && mAddressDetails!!.id.isNotEmpty()){
+                FirestoreClass().updateAddress(this@AddEditAddressActivity, addressModel, mAddressDetails!!.id)
+            }else{
+                FirestoreClass().addAddress(this@AddEditAddressActivity, addressModel)
+            }
 
-            FirestoreClass().addAddress(this, addressModel)
         }
     }
 
     fun addUpdateAddressSuccess(){
         hideProgressDialog()
 
-        Toast.makeText(this,resources.getString(R.string.err_your_address_added_successfully),
+        val notifySuccessMessage: String = if(mAddressDetails != null && mAddressDetails!!.id.isNotEmpty()){
+            resources.getString(R.string.msg_your_address_updated_successfully)
+        }else{
+            resources.getString(R.string.err_your_address_updated_successfully)
+        }
+
+
+        Toast.makeText(this,notifySuccessMessage,
         Toast.LENGTH_SHORT).show()
 
+        setResult(RESULT_OK)
         finish()
     }
 
@@ -153,4 +198,6 @@ class AddEditAddressActivity : BaseActivity() {
         }
         }
     }
+
+
 }
