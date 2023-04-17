@@ -69,6 +69,7 @@ class CartListActivity : BaseActivity() {
         Toast.LENGTH_SHORT).show()
 
         getCartItemsList()
+
     }
 
 
@@ -123,6 +124,10 @@ class CartListActivity : BaseActivity() {
             }else{
                 ll_checkout?.visibility = View.GONE
             }
+        } else {
+            rv_cart_items_list?.visibility = View.GONE
+            ll_checkout?.visibility = View.GONE
+            tv_no_cart_item_found?.visibility = View.VISIBLE
         }
     }
 
