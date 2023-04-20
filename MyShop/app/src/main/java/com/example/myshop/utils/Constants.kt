@@ -59,6 +59,8 @@ object Constants {
 
     const val STOCK_QUANTITY: String = "stock_quantity"
 
+    const val EXTRA_MY_ORDER_DETAILS : String = "extra_my_order_details"
+
 
 
 

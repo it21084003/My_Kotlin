@@ -130,6 +130,7 @@ class CheckoutActivity : BaseActivity() {
                 mSubTotal.toString(),
                 "10.0",
                 mTotalAmount.toString(),
+                System.currentTimeMillis()
             )
             FirestoreClass().placeOrder(this, order)
         }
