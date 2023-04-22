@@ -11,6 +11,7 @@ import com.example.myshop.ui.activities.*
 import com.example.myshop.ui.fragments.DashboardFragment
 import com.example.myshop.ui.fragments.OrdersFragment
 import com.example.myshop.ui.fragments.ProductsFragment
+import com.example.myshop.ui.fragments.SoldProductsFragment
 import com.example.myshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -266,19 +267,39 @@ class FirestoreClass {
             }
     }
 
-    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<CartItem>){
+    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<CartItem>, order: Order){
         val writeBatch = mFireStore.batch()
 
         for(cartItem in cartList){
-            val productHashMap = HashMap<String, Any>()
+//            val productHashMap = HashMap<String, Any>()
 
-            productHashMap[Constants.STOCK_QUANTITY] =
-                (cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+//            productHashMap[Constants.STOCK_QUANTITY] =
+//                (cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
 
-            val documentReference = mFireStore.collection(Constants.PRODUCTS)
+        val soldProduct = SoldProduct(
+//            FirestoreClass().getCurrentuserID(),
+            cartItem.product_owner_id,
+            cartItem.title,
+            cartItem.price,
+            cartItem.cart_quantity,
+            cartItem.image,
+            order.title,
+            order.order_datetime,
+            order.sub_total_amount,
+            order.shipping_charge,
+            order.total_amount,
+            order.address
+
+
+        )
+
+//            val documentReference = mFireStore.collection(Constants.PRODUCTS)
+//                .document(cartItem.product_id)
+            val documentReference = mFireStore.collection(Constants.SOLD_PRODUCTS)
                 .document(cartItem.product_id)
 
-            writeBatch.update(documentReference, productHashMap)
+//            writeBatch.update(documentReference, productHashMap)
+            writeBatch.set(documentReference, soldProduct)
         }
 
         for(cartItem in cartList){
@@ -600,6 +621,27 @@ class FirestoreClass {
             .addOnFailureListener{ e ->
                 fragment.hideProgressDialog()
                 Log.e(fragment.javaClass.simpleName,"Error while getting the orders list", e)
+            }
+    }
+
+    fun getSoldProductsList(fragment: SoldProductsFragment){
+        mFireStore.collection(Constants.SOLD_PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentuserID())
+            .get()
+            .addOnSuccessListener { document ->
+                val list: ArrayList<SoldProduct> = ArrayList()
+                for(i in document.documents){
+                    val soldProduct = i.toObject(SoldProduct::class.java)!!
+                    soldProduct.id = i.id
+
+                    list.add(soldProduct)
+                }
+
+                fragment.successSoldProductList(list)
+            }
+            .addOnFailureListener{ e ->
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName,"Error while getting the list of sold products", e)
             }
     }
 

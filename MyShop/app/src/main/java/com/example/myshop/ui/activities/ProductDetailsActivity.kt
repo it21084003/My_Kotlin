@@ -19,6 +19,8 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private var mProductId: String = ""
     private lateinit var mProductDetails: Product
+    private var mProductOwnerId : String = ""
+
     private var iv_product_detail_image : ImageView? = null
     private var tv_product_details_title : TextView? = null
     private var tv_product_details_price : TextView? = null
@@ -45,12 +47,12 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         if(intent.hasExtra(Constants.EXTRA_PRODUCT_ID)){
             mProductId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID)!!
         }
-        var productOwnerId: String = ""
+        //var productOwnerId: String = ""
 
         if(intent.hasExtra(Constants.EXTRA_PRODUCT_OWNER_ID)){
-            productOwnerId = intent.getStringExtra(Constants.EXTRA_PRODUCT_OWNER_ID)!!
+            mProductOwnerId = intent.getStringExtra(Constants.EXTRA_PRODUCT_OWNER_ID)!!
         }
-        if(FirestoreClass().getCurrentuserID() == productOwnerId){
+        if(FirestoreClass().getCurrentuserID() == mProductOwnerId){
             btn_add_to_cart?.visibility = View.GONE
             btn_go_to_cart?.visibility = View.GONE
         }else{
@@ -125,6 +127,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
     private fun addToCart(){
         val cartItem = CartItem(
             FirestoreClass().getCurrentuserID(),
+            mProductOwnerId,
             mProductId,
             mProductDetails.title,
             mProductDetails.price,
